@@ -48,7 +48,7 @@ class ParsersManagerTest {
         final ParsedContent htmlContent = manager.parse(rawContent);
         assertNotNull(htmlContent);
         assertTrue(htmlContent instanceof HtmlDocument);
-        assertEquals(htmlContent, response);
+        assertEquals(response, htmlContent);
 
         verify(htmlParser, times(1)).isSupported(any());
         verify(htmlParser, times(1)).parse(any());

@@ -31,7 +31,7 @@ class HtmlContentParserTest {
 
         final HtmlDocument document = parser.parse(rawContent);
         assertNotNull(document);
-        assertEquals(document.links().count(), 0L);
+        assertEquals(0L, document.links().count());
     }
 
     @Test
@@ -43,7 +43,7 @@ class HtmlContentParserTest {
             final HtmlDocument document = parser.parse(rawContent);
 
             assertNotNull(document);
-            assertEquals(document.links().count(), 109L);
+            assertEquals(109L, document.links().count());
         }
     }
 
@@ -55,7 +55,7 @@ class HtmlContentParserTest {
 
         final HtmlDocument document = parser.parse(rawContent);
         assertNotNull(document);
-        assertEquals(document.images().count(), 0L);
+        assertEquals(0L, document.images().count());
     }
 
     @Test
@@ -67,7 +67,7 @@ class HtmlContentParserTest {
             final HtmlDocument document = parser.parse(rawContent);
 
             assertNotNull(document);
-            assertEquals(document.images().count(), 23L);
+            assertEquals(23L, document.images().count());
         }
     }
 
@@ -79,7 +79,7 @@ class HtmlContentParserTest {
 
         final HtmlDocument document = parser.parse(rawContent);
         assertNotNull(document);
-        assertEquals(document.imports().count(), 0L);
+        assertEquals(0L, document.imports().count());
     }
 
     @Test
@@ -91,7 +91,7 @@ class HtmlContentParserTest {
             final HtmlDocument document = parser.parse(rawContent);
 
             assertNotNull(document);
-            assertEquals(document.imports().count(), 9L);
+            assertEquals(9L, document.imports().count());
         }
     }
 
