@@ -3,11 +3,14 @@ package org.webcrawler.parser;
 import org.junit.jupiter.api.Test;
 import org.webcrawler.model.HtmlDocument;
 import org.webcrawler.model.RawContent;
+import org.webcrawler.model.XmlAttribute;
+import org.webcrawler.model.XmlElement;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -101,5 +104,21 @@ class HtmlContentParserTest {
         final ContentParser<HtmlDocument> parser = ContentParsers.newHtmlParser();
 
         assertTrue(parser.isSupported(rawContent));
+    }
+
+    @Test
+    void rootElementTest() throws IOException {
+        final ContentParser<HtmlDocument> parser = ContentParsers.newHtmlParser();
+
+        try(final InputStream inputStream = getClass().getResourceAsStream("/iqos.com.html")) {
+            final RawContent rawContent = new RawContent(URI.create("http://localshost:8080"), "", inputStream.readAllBytes());
+            final HtmlDocument document = parser.parse(rawContent);
+
+            assertNotNull(document);
+            final XmlElement rootElement = document.getRootElement();
+            assertNotNull(rootElement);
+            final Stream<XmlAttribute> attributes = rootElement.attributes();
+            assertEquals(2L, attributes.count());
+        }
     }
 }
