@@ -8,7 +8,7 @@ import java.util.stream.Stream;
 /**
  * Todo extend methods
  */
-public interface HtmlDocument extends ParsedContent {
+public interface HtmlDocument extends XmlDocument {
 
     Stream<Link> links();
 

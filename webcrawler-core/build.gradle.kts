@@ -12,6 +12,8 @@ dependencies {
     implementation("org.jsoup:jsoup:1.13.1")
     implementation("org.jetbrains:annotations:16.0.2")
 
+    runtimeOnly("xerces:xercesImpl:2.12.0")
+
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.0")
     testImplementation("org.mockito:mockito-core:3.3.3")
 

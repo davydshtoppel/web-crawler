@@ -1,5 +1,6 @@
 package org.webcrawler.parser;
 
+import org.jetbrains.annotations.NotNull;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -14,13 +15,13 @@ import java.util.stream.Stream;
 final class JsoupHtmlContentParser implements ContentParser<HtmlDocument> {
 
     @Override
-    public boolean isSupported(RawContent content) {
+    public boolean isSupported(@NotNull RawContent content) {
         final String contentType = content.getContentType();
         return contentType.startsWith("text/html");
     }
 
     @Override
-    public HtmlDocument parse(RawContent content) {
+    public @NotNull HtmlDocument parse(@NotNull RawContent content) {
         final URI baseUri = content.getUri();
         final String html = new String(content.getContentData(), StandardCharsets.UTF_8);
         final Document jsoupDocument = Jsoup.parse(html, baseUri.toASCIIString());
