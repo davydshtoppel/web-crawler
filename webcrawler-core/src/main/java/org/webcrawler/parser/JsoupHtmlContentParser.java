@@ -5,10 +5,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.webcrawler.model.HtmlDocument;
-import org.webcrawler.model.RawContent;
-import org.webcrawler.model.XmlAttribute;
-import org.webcrawler.model.XmlElement;
+import org.webcrawler.model.*;
 
 import java.net.URI;
 import java.net.URLEncoder;
@@ -89,6 +86,11 @@ final class JsoupHtmlContentParser implements ContentParser<HtmlDocument> {
 
         private JsoupXmlElement(Element jsoupElement) {
             this.jsoupElement = jsoupElement;
+        }
+
+        @Override
+        public Optional<XmlNamespace> namespace() {
+            return Optional.empty();
         }
 
         @Override

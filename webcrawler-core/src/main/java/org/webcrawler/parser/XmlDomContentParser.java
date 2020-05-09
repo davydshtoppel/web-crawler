@@ -4,10 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.webcrawler.model.RawContent;
-import org.webcrawler.model.XmlAttribute;
-import org.webcrawler.model.XmlDocument;
-import org.webcrawler.model.XmlElement;
+import org.webcrawler.model.*;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -35,6 +32,7 @@ final class XmlDomContentParser implements ContentParser<XmlDocument> {
         final Document document;
         try {
             final DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            dbFactory.setNamespaceAware(true);
             final DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             document = dBuilder.parse(new InputSource(new StringReader(xml)));
         } catch (ParserConfigurationException e) {
@@ -72,6 +70,16 @@ final class XmlDomContentParser implements ContentParser<XmlDocument> {
 
         DomXmlElement(Element element) {
             this.element = element;
+        }
+
+        @Override
+        public Optional<XmlNamespace> namespace() {
+            final String prefix = element.getPrefix();
+            final String namespaceURI = element.getNamespaceURI();
+            if (prefix != null && namespaceURI != null) {
+                return Optional.of(new XmlNamespace(prefix, namespaceURI));
+            }
+            return Optional.empty();
         }
 
         @Override

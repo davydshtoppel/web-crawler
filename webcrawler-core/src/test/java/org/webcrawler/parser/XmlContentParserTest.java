@@ -48,6 +48,10 @@ class XmlContentParserTest {
             assertNotNull(rootElement);
             final Stream<XmlAttribute> attributes = rootElement.attributes();
             assertEquals(2L, attributes.count());
+            final XmlNamespace xmlNamespace = rootElement.namespace().orElse(null);
+            assertNotNull(xmlNamespace);
+            assertEquals(xmlNamespace.getPrefix(), "xsl");
+            assertEquals(xmlNamespace.getUri(), "http://www.w3.org/1999/XSL/Transform");
         }
     }
 
