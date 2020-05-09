@@ -9,8 +9,7 @@ import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 class XmlContentParserTest {
 
@@ -50,5 +49,19 @@ class XmlContentParserTest {
             final Stream<XmlAttribute> attributes = rootElement.attributes();
             assertEquals(2L, attributes.count());
         }
+    }
+
+    @Test
+    void testXmlIsSupported() {
+        final ContentParser<XmlDocument> parser = ContentParsers.newXmlParser();
+
+        assertTrue(parser.isSupported(new RawContent(URI.create("http://localshost:8080"), "text/xml", new byte[0])));
+    }
+
+    @Test
+    void applicationXmlIsSupported() {
+        final ContentParser<XmlDocument> parser = ContentParsers.newXmlParser();
+
+        assertTrue(parser.isSupported(new RawContent(URI.create("http://localshost:8080"), "application/xml", new byte[0])));
     }
 }

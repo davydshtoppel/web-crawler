@@ -25,7 +25,8 @@ final class XmlDomContentParser implements ContentParser<XmlDocument> {
 
     @Override
     public boolean isSupported(@NotNull RawContent content) {
-        return false;
+        final String contentType = content.getContentType();
+        return contentType.startsWith("text/xml") || contentType.startsWith("application/xml");
     }
 
     @Override
