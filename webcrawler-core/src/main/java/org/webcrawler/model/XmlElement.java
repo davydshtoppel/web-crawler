@@ -1,11 +1,15 @@
 package org.webcrawler.model;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Optional;
 import java.util.stream.Stream;
 
 public interface XmlElement {
 
-    Optional<XmlNamespace> namespace();
+    @NotNull String getName();
 
-    Stream<XmlAttribute> attributes();
+    @NotNull Optional<XmlNamespace> namespace();
+
+    @NotNull Stream<XmlAttribute> attributes();
 }

@@ -89,12 +89,17 @@ final class JsoupHtmlContentParser implements ContentParser<HtmlDocument> {
         }
 
         @Override
-        public Optional<XmlNamespace> namespace() {
+        public @NotNull String getName() {
+            return jsoupElement.tagName();
+        }
+
+        @Override
+        public @NotNull Optional<XmlNamespace> namespace() {
             return Optional.empty();
         }
 
         @Override
-        public Stream<XmlAttribute> attributes() {
+        public @NotNull Stream<XmlAttribute> attributes() {
             return Optional.ofNullable(jsoupElement.attributes())
                     .stream()
                     .flatMap(it -> it.asList().stream())

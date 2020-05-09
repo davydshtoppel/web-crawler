@@ -46,12 +46,13 @@ class XmlContentParserTest {
             assertNotNull(document);
             final XmlElement rootElement = document.getRootElement();
             assertNotNull(rootElement);
+            assertEquals("stylesheet", rootElement.getName());
             final Stream<XmlAttribute> attributes = rootElement.attributes();
             assertEquals(2L, attributes.count());
             final XmlNamespace xmlNamespace = rootElement.namespace().orElse(null);
             assertNotNull(xmlNamespace);
-            assertEquals(xmlNamespace.getPrefix(), "xsl");
-            assertEquals(xmlNamespace.getUri(), "http://www.w3.org/1999/XSL/Transform");
+            assertEquals("xsl", xmlNamespace.getPrefix());
+            assertEquals("http://www.w3.org/1999/XSL/Transform", xmlNamespace.getUri());
         }
     }
 

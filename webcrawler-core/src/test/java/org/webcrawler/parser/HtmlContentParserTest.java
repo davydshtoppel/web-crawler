@@ -117,6 +117,7 @@ class HtmlContentParserTest {
             assertNotNull(document);
             final XmlElement rootElement = document.getRootElement();
             assertNotNull(rootElement);
+            assertEquals("html", rootElement.getName());
             final Stream<XmlAttribute> attributes = rootElement.attributes();
             assertEquals(2L, attributes.count());
         }

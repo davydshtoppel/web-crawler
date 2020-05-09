@@ -73,7 +73,12 @@ final class XmlDomContentParser implements ContentParser<XmlDocument> {
         }
 
         @Override
-        public Optional<XmlNamespace> namespace() {
+        public @NotNull String getName() {
+            return element.getLocalName();
+        }
+
+        @Override
+        public @NotNull Optional<XmlNamespace> namespace() {
             final String prefix = element.getPrefix();
             final String namespaceURI = element.getNamespaceURI();
             if (prefix != null && namespaceURI != null) {
@@ -83,7 +88,7 @@ final class XmlDomContentParser implements ContentParser<XmlDocument> {
         }
 
         @Override
-        public Stream<XmlAttribute> attributes() {
+        public @NotNull Stream<XmlAttribute> attributes() {
             return Optional.ofNullable(element.getAttributes())
                     .stream()
                     .flatMap(it -> {
