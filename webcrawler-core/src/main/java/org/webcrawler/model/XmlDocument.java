@@ -1,6 +1,8 @@
 package org.webcrawler.model;
 
+import org.jetbrains.annotations.NotNull;
+
 public interface XmlDocument extends ParsedContent {
 
-    XmlElement getRootElement();
+    @NotNull XmlElement getRootElement();
 }

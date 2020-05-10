@@ -41,18 +41,25 @@ class XmlContentParserTest {
 
         try(final InputStream inputStream = getClass().getResourceAsStream("/test1.xml")) {
             final RawContent rawContent = new RawContent(URI.create("http://localshost:8080"), "", inputStream.readAllBytes());
-            final XmlDocument document = parser.parse(rawContent);
 
+            final XmlDocument document = parser.parse(rawContent);
             assertNotNull(document);
+
             final XmlElement rootElement = document.getRootElement();
             assertNotNull(rootElement);
             assertEquals("stylesheet", rootElement.getName());
+
             final Stream<XmlAttribute> attributes = rootElement.attributes();
             assertEquals(2L, attributes.count());
+
             final XmlNamespace xmlNamespace = rootElement.namespace().orElse(null);
             assertNotNull(xmlNamespace);
             assertEquals("xsl", xmlNamespace.getPrefix());
             assertEquals("http://www.w3.org/1999/XSL/Transform", xmlNamespace.getUri());
+
+            final Stream<XmlElement> children = rootElement.children();
+            assertNotNull(children);
+            assertEquals(1L, children.count());
         }
     }
 

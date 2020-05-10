@@ -10,6 +10,7 @@ import org.webcrawler.model.*;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Collection;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -75,7 +76,7 @@ final class JsoupHtmlContentParser implements ContentParser<HtmlDocument> {
         }
 
         @Override
-        public XmlElement getRootElement() {
+        public @NotNull XmlElement getRootElement() {
             return new JsoupXmlElement(jsoupDocument.child(0));
         }
     }
@@ -105,6 +106,14 @@ final class JsoupHtmlContentParser implements ContentParser<HtmlDocument> {
                     .flatMap(it -> it.asList().stream())
                     .map(attr -> new XmlAttribute(attr.getKey(), attr.getValue()));
 
+        }
+
+        @Override
+        public @NotNull Stream<XmlElement> children() {
+            return Optional.ofNullable(jsoupElement.children())
+                    .stream()
+                    .flatMap(Collection::stream)
+                    .map(JsoupXmlElement::new);
         }
     }
 }

@@ -12,4 +12,6 @@ public interface XmlElement {
     @NotNull Optional<XmlNamespace> namespace();
 
     @NotNull Stream<XmlAttribute> attributes();
+
+    @NotNull Stream<XmlElement> children();
 }

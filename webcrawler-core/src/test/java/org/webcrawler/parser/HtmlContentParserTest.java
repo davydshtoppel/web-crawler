@@ -112,14 +112,20 @@ class HtmlContentParserTest {
 
         try(final InputStream inputStream = getClass().getResourceAsStream("/iqos.com.html")) {
             final RawContent rawContent = new RawContent(URI.create("http://localshost:8080"), "", inputStream.readAllBytes());
-            final HtmlDocument document = parser.parse(rawContent);
 
+            final HtmlDocument document = parser.parse(rawContent);
             assertNotNull(document);
+
             final XmlElement rootElement = document.getRootElement();
             assertNotNull(rootElement);
             assertEquals("html", rootElement.getName());
+
             final Stream<XmlAttribute> attributes = rootElement.attributes();
             assertEquals(2L, attributes.count());
+
+            final Stream<XmlElement> children = rootElement.children();
+            assertNotNull(children);
+            assertEquals(2L, children.count());
         }
     }
 }

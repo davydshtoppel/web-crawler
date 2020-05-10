@@ -59,7 +59,7 @@ final class XmlDomContentParser implements ContentParser<XmlDocument> {
         }
 
         @Override
-        public XmlElement getRootElement() {
+        public @NotNull XmlElement getRootElement() {
             return new DomXmlElement(document.getDocumentElement());
         }
     }
@@ -100,6 +100,23 @@ final class XmlDomContentParser implements ContentParser<XmlDocument> {
                         return Arrays.stream(result);
                     })
                     .map(node -> new XmlAttribute(node.getNodeName(), node.getNodeValue()));
+        }
+
+        @Override
+        public @NotNull Stream<XmlElement> children() {
+            return Optional.ofNullable(element.getChildNodes())
+                    .stream()
+                    .flatMap(it -> {
+                        final int length = it.getLength();
+                        final Node[] result = new Node[length];
+                        for (int i = 0; i < length; i++) {
+                            result[i] = it.item(i);
+                        }
+                        return Arrays.stream(result);
+                    })
+                    .filter(it -> it instanceof Element)
+                    .map(Element.class::cast)
+                    .map(DomXmlElement::new);
         }
     }
 }
