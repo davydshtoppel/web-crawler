@@ -1,33 +1,36 @@
 package org.webcrawler.parser;
 
+import org.jetbrains.annotations.NotNull;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.webcrawler.model.HtmlDocument;
-import org.webcrawler.model.RawContent;
+import org.webcrawler.model.*;
 
 import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Collection;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 final class JsoupHtmlContentParser implements ContentParser<HtmlDocument> {
 
     @Override
-    public boolean isSupported(RawContent content) {
+    public boolean isSupported(@NotNull RawContent content) {
         final String contentType = content.getContentType();
         return contentType.startsWith("text/html");
     }
 
     @Override
-    public HtmlDocument parse(RawContent content) {
+    public @NotNull HtmlDocument parse(@NotNull RawContent content) {
         final URI baseUri = content.getUri();
         final String html = new String(content.getContentData(), StandardCharsets.UTF_8);
         final Document jsoupDocument = Jsoup.parse(html, baseUri.toASCIIString());
         return new JsoupHtmlDocument(content, jsoupDocument);
     }
 
-    static final class JsoupHtmlDocument implements HtmlDocument {
+    private static final class JsoupHtmlDocument implements HtmlDocument {
 
         private final RawContent rawContent;
         private final Document jsoupDocument;
@@ -70,6 +73,47 @@ final class JsoupHtmlContentParser implements ContentParser<HtmlDocument> {
         @Override
         public byte[] getRawData() {
             return rawContent.getContentData();
+        }
+
+        @Override
+        public @NotNull XmlElement getRootElement() {
+            return new JsoupXmlElement(jsoupDocument.child(0));
+        }
+    }
+
+    private static final class JsoupXmlElement implements XmlElement {
+
+        private final Element jsoupElement;
+
+        private JsoupXmlElement(Element jsoupElement) {
+            this.jsoupElement = jsoupElement;
+        }
+
+        @Override
+        public @NotNull String getName() {
+            return jsoupElement.tagName();
+        }
+
+        @Override
+        public @NotNull Optional<XmlNamespace> namespace() {
+            return Optional.empty();
+        }
+
+        @Override
+        public @NotNull Stream<XmlAttribute> attributes() {
+            return Optional.ofNullable(jsoupElement.attributes())
+                    .stream()
+                    .flatMap(it -> it.asList().stream())
+                    .map(attr -> new XmlAttribute(attr.getKey(), attr.getValue()));
+
+        }
+
+        @Override
+        public @NotNull Stream<XmlElement> children() {
+            return Optional.ofNullable(jsoupElement.children())
+                    .stream()
+                    .flatMap(Collection::stream)
+                    .map(JsoupXmlElement::new);
         }
     }
 }
